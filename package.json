@@ -1,6 +1,6 @@
 {
   "name": "retext-ast",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Retext encoding and decoding between AST and object model",
   "keywords": [
     "retext",

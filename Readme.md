@@ -1,81 +1,113 @@
-# retext-visit [![Build Status](https://travis-ci.org/wooorm/retext-visit.svg?branch=master)](https://travis-ci.org/wooorm/retext-visit) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-visit.svg)](https://coveralls.io/r/wooorm/retext-visit?branch=master)
+# retext-ast [![Build Status](https://travis-ci.org/wooorm/retext-ast.svg?branch=master)](https://travis-ci.org/wooorm/retext-ast) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-ast.svg)](https://coveralls.io/r/wooorm/retext-ast?branch=master)
 
-[![browser support](https://ci.testling.com/wooorm/retext-visit.png) ](https://ci.testling.com/wooorm/retext-visit)
+[![browser support](https://ci.testling.com/wooorm/retext-ast.png) ](https://ci.testling.com/wooorm/retext-ast)
 
 See [Browser Support](#browser-support) for more information (a.k.a. don’t worry about those grey icons above).
 
 ---
 
-**[retext](https://github.com/wooorm/retext "Retext")** node visitor.
+**[retext](https://github.com/wooorm/retext "Retext")** encoding and decoding between AST and object model.
 
 ## Installation
 
 NPM:
 ```sh
-$ npm install retext-visit
+$ npm install retext-ast
 ```
 
 Component.js:
 ```sh
-$ component install wooorm/retext-visit
+$ component install wooorm/retext-ast
 ```
 
 ## Usage
 
 ```js
 var Retext = require('retext'),
-    visit = require('retext-visit');
+    retextAST = require('retext-ast'),
+    fs = require('fs');
 
 var root = new Retext()
-    .use(visit)
-    .parse('A simple english sentence.');
+    .use(retextAST)
+    .fromAST(fs.readFileSync('ast.json', 'utf8'));
+
+root.toAST(2); // Pretty-print each level with two spaces.
 ```
 
 ## API
 
-### Node#visit(callback)
+### retext.fromAST(ast)
 
 ```js
-root.head.head.visit(function (node) {
-    console.log(node.toString());
-});
-// 'A'
-// ' '
-// 'simple'
-// ' '
-// 'english'
-// ' '
-// 'sentence'
-// '.'
+var Retext = require('retext'),
+    retextAST = require('retext-ast');
+
+var rootNode = new Retext()
+    .use(retextAST)
+    .fromAST({"type":"RootNode", "children":[
+      {"type":"ParagraphNode", "children": [
+        {"type":"SentenceNode", "children": [
+          { "type": "WordNode", "value": "A" },
+          { "type": "WhiteSpaceNode", "value": " " },
+          { "type": "WordNode", "value": "simple" },
+          { "type": "WhiteSpaceNode", "value": " " },
+          { "type": "WordNode", "value": "sentence" },
+          { "type": "PunctuationNode", "value": "." }
+        ]}
+      ]}
+    ]});
+/*
+ * ˅ RootNode
+ *    ˃ 0: ParagraphNode[1]
+ *      length: 1
+ *    ˃ head: ParagraphNode[1]
+ *    ˃ data: {}
+ *    ˃ __proto__: RootNode
+ */
 ```
 
-Visit every node inside the operated on node.
+Parse a JSON object or string—a (parsed?) result of `Node#toAST()` or `Node#toJSON()`—into an object model.
 
-- `callback` (`function`): The function to call with each node.
+- `ast` (`String` or `Object`): The object to parse into a TextOM tree.
 
-When callback return false, stops iterating.
 
-### Node#visitType(type, callback)
+### Extensions to TextOM
+
+#### TextOM.Node#toJSON()
 
 ```js
-root.visitType(root.WORD_NODE, function (wordNode) {
-    console.log(wordNode.toString());
-});
-// 'A'
-// 'simple'
-// 'english'
-// 'sentence'
+var Retext = require('retext'),
+    retextAST = require('retext-ast'),
+    rootNode = new Retext().use(retextAST).parse('A simple sentence.');
+
+rootNode.toJSON();
+/*
+ * ˅ Object
+ *    ˃ children: Array[1]
+ *      type: "RootNode"
+ *    ˃ __proto__: Object
+ */
 ```
 
-Visit every node of type `type` inside the operated on node.
+Returns a JSON (**not** stringified) representation of a Node, can later be passed to [`retext.fromAST()`](#retextfromastast).
+The name of this method might seem a bit confusing, as it doesn't return a JSON string: See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior) for an explanation.
 
-- `type`: A type of a node (e.g., PARAGRAPH_NODE, WORD_NODE, or WHITE_SPACE_NODE);
-- `callback` (`function`): The function to call with each node.
+#### TextOM.Node#toAST(delimiter?)
 
-When callback return false, stops iterating.
+```js
+var Retext = require('retext'),
+    retextAST = require('retext-ast'),
+    rootNode = new Retext().use(retextAST).parse('A simple sentence.');
+
+rootNode.toAST(); // '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","value":"A"},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","value":"simple"},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","value":"sentence"},{"type":"PunctuationNode","value":"."}]}]}]}'
+```
+
+Returns a stringified JSON—optionally pretty printed—representation of a Node, can later be passed to [`retext.fromAST()`](#retextfromastast).
+
+- `delimiter` (`null`, `Number`, or `String`): Causes the AST to be pretty printed. Passed to `JSON.stringify` (See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument) for docs).
 
 ## Browser Support
-Pretty much every browser (available through browserstack) runs all retext-visit unit tests.
+Pretty much every browser (available through browserstack) runs all retext-ast unit tests.
 
 ## License
 

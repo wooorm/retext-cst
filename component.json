@@ -2,7 +2,7 @@
   "name": "retext-ast",
   "repository": "wooorm/retext-ast",
   "description": "Retext encoding and decoding between AST and object model",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "keywords": [
     "retext",
     "ast",

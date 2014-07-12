@@ -47,49 +47,9 @@ describe('Retext.parser.TextOM.Node#toJSON()', function () {
     });
 
     it('should convert a `Node` into an AST', function () {
-        var root, ast;
-
-        root = retext.parse('A simple sentence.');
-
-        ast = {
-            'type' : 'RootNode',
-            'children' : [
-                {
-                    'type' : 'ParagraphNode',
-                    'children' : [
-                        {
-                            'type' : 'SentenceNode',
-                            'children' : [
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'A'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'simple'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'sentence'
-                                },
-                                {
-                                    'type' : 'PunctuationNode',
-                                    'value' : '.'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
+        var source = 'A simple sentence.',
+            root = retext.parse(source),
+            ast = retext.parser.tokenizeRoot(source);
 
         assert(JSON.stringify(root) === JSON.stringify(ast));
     });
@@ -112,96 +72,29 @@ describe('Retext.parser.TextOM.Node#toAST(delimiter?)', function () {
     });
 
     it('should convert a `Node` into a stringified AST', function () {
-        var ast = JSON.stringify({
-            'type' : 'RootNode',
-            'children' : [
-                {
-                    'type' : 'ParagraphNode',
-                    'children' : [
-                        {
-                            'type' : 'SentenceNode',
-                            'children' : [
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'A'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'simple'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'sentence'
-                                },
-                                {
-                                    'type' : 'PunctuationNode',
-                                    'value' : '.'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        });
+        var source = 'A simple sentence.',
+            astA = retext.parse(source).toAST(),
+            astB = retext.parser.tokenizeRoot(source);
 
-        assert(retext.parse('A simple sentence.').toAST() === ast);
+        assert(astA === JSON.stringify(astB));
     });
 
     it('should convert a `Node` into a stringified AST using the given ' +
         'delimeter', function () {
-            var ast = JSON.stringify({
-                'type' : 'RootNode',
-                'children' : [
-                    {
-                        'type' : 'ParagraphNode',
-                        'children' : [
-                            {
-                                'type' : 'SentenceNode',
-                                'children' : [
-                                    {
-                                        'type' : 'WordNode',
-                                        'value' : 'A'
-                                    },
-                                    {
-                                        'type' : 'WhiteSpaceNode',
-                                        'value' : ' '
-                                    },
-                                    {
-                                        'type' : 'WordNode',
-                                        'value' : 'simple'
-                                    },
-                                    {
-                                        'type' : 'WhiteSpaceNode',
-                                        'value' : ' '
-                                    },
-                                    {
-                                        'type' : 'WordNode',
-                                        'value' : 'sentence'
-                                    },
-                                    {
-                                        'type' : 'PunctuationNode',
-                                        'value' : '.'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }, null, '\t');
-
-            assert(retext.parse('A simple sentence.').toAST('\t') === ast);
+            var source = 'A simple sentence.',
+                delimiter = '\t',
+                ast = retext.parser.tokenizeRoot(source);
 
             assert(
-                retext.parse('A simple sentence.').toAST('  ') ===
-                ast.replace(/\t/g, '  ')
+                retext.parse(source).toAST(delimiter) ===
+                JSON.stringify(ast, null, delimiter)
+            );
+
+            delimiter = 2;
+
+            assert(
+                retext.parse(source).toAST(delimiter) ===
+                JSON.stringify(ast, null, delimiter)
             );
         }
     );
@@ -269,93 +162,19 @@ describe('Retext.fromAST(ast)', function () {
     );
 
     it('should convert a stringified AST into an object model', function () {
-        var ast = JSON.stringify({
-            'type' : 'RootNode',
-            'children' : [
-                {
-                    'type' : 'ParagraphNode',
-                    'children' : [
-                        {
-                            'type' : 'SentenceNode',
-                            'children' : [
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'A'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'simple'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'sentence'
-                                },
-                                {
-                                    'type' : 'PunctuationNode',
-                                    'value' : '.'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        });
+        var ast = retext.parser.tokenizeRoot('A simple sentence.');
+
+        ast = JSON.stringify(ast);
 
         assert(retext.fromAST(ast).toAST() === ast);
 
-        /*eslint-disable no-new-wrappers */
+        /* eslint-disable no-new-wrappers */
         assert(retext.fromAST(new String(ast)).toAST() === ast);
-        /*eslint-enable no-new-wrappers */
+        /* eslint-enable no-new-wrappers */
     });
 
     it('should convert an AST into an object model', function () {
-        var ast = {
-            'type' : 'RootNode',
-            'children' : [
-                {
-                    'type' : 'ParagraphNode',
-                    'children' : [
-                        {
-                            'type' : 'SentenceNode',
-                            'children' : [
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'A'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'simple'
-                                },
-                                {
-                                    'type' : 'WhiteSpaceNode',
-                                    'value' : ' '
-                                },
-                                {
-                                    'type' : 'WordNode',
-                                    'value' : 'sentence'
-                                },
-                                {
-                                    'type' : 'PunctuationNode',
-                                    'value' : '.'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
+        var ast = retext.parser.tokenizeRoot('A simple sentence.');
 
         assert(retext.fromAST(ast).toAST() === JSON.stringify(ast));
     });

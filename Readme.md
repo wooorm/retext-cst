@@ -40,19 +40,32 @@ root.toAST(2); // Pretty-print each level with two spaces.
 
 ```js
 var Retext = require('retext'),
-    retextAST = require('retext-ast');
+    retextAST = require('retext-ast'),
+    rootNode;
 
-var rootNode = new Retext()
+rootNode = new Retext()
     .use(retextAST)
     .fromAST({"type":"RootNode", "children":[
       {"type":"ParagraphNode", "children": [
         {"type":"SentenceNode", "children": [
-          { "type": "WordNode", "value": "A" },
-          { "type": "WhiteSpaceNode", "value": " " },
-          { "type": "WordNode", "value": "simple" },
-          { "type": "WhiteSpaceNode", "value": " " },
-          { "type": "WordNode", "value": "sentence" },
-          { "type": "PunctuationNode", "value": "." }
+          {"type":"WordNode", "children": [
+            { "type": "TextNode", "value": "A" }
+          ]},
+          {"type":"WhiteSpaceNode", "children": [
+            { "type": "TextNode", "value": " " }
+          ]},
+          {"type":"WordNode", "children": [
+            { "type": "TextNode", "value": "simple" }
+          ]},
+          {"type":"WhiteSpaceNode", "children": [
+            { "type": "TextNode", "value": " " }
+          ]},
+          {"type":"WordNode", "children": [
+            { "type": "TextNode", "value": "sentence" }
+          ]},
+          {"type":"PunctuationNode", "children": [
+            { "type": "TextNode", "value": "." }
+          ]}
         ]}
       ]}
     ]});
@@ -78,7 +91,11 @@ Parse a JSON object or string—a (parsed?) result of `Node#toAST()` or `Node#to
 ```js
 var Retext = require('retext'),
     retextAST = require('retext-ast'),
-    rootNode = new Retext().use(retextAST).parse('A simple sentence.');
+    rootNode;
+
+rootNode = new Retext()
+    .use(retextAST)
+    .parse('A simple sentence.');
 
 rootNode.toJSON();
 /*
@@ -99,7 +116,7 @@ var Retext = require('retext'),
     retextAST = require('retext-ast'),
     rootNode = new Retext().use(retextAST).parse('A simple sentence.');
 
-rootNode.toAST(); // '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","value":"A"},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","value":"simple"},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","value":"sentence"},{"type":"PunctuationNode","value":"."}]}]}]}'
+rootNode.toAST(); // '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","children":[{"type":"TextNode","value":"A"}]},{"type":"WhiteSpaceNode","children":[{"type":"TextNode","value":" "}]},{"type":"WordNode","children":[{"type":"TextNode","value":"simple"}]},{"type":"WhiteSpaceNode","children":[{"type":"TextNode","value":" "}]},{"type":"WordNode","children":[{"type":"TextNode","value":"sentence"}]},{"type":"PunctuationNode","children":[{"type":"TextNode","value":"."}]}]}]}]}'
 ```
 
 Returns a stringified JSON—optionally pretty printed—representation of a Node, can later be passed to [`retext.fromAST()`](#retextfromastast).

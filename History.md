@@ -1,4 +1,14 @@
 
+n.n.n / 2014-07-12
+==================
+
+ * Update documentation for latest changes in retext
+ * Added changelog
+ * Simplified unit tests
+ * Fix changed functionality in textom, retext
+ * Update retext
+ * Removed functionality to test complexity, browserify unit tests by default
+
 0.0.4 / 2014-06-19
 ==================
 

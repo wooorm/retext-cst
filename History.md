@@ -1,5 +1,5 @@
 
-n.n.n / 2014-07-12
+0.1.0 / 2014-07-12
 ==================
 
  * Update documentation for latest changes in retext

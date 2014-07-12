@@ -63,7 +63,11 @@ function fromJSON(TextOM, ast) {
  * @private
  */
 function fromAST(ast) {
-    return this.parse(fromJSON(this.parser.TextOM, ast));
+    var tree = fromJSON(this.parser.TextOM, ast);
+
+    this.applyPlugins(tree);
+
+    return tree;
 }
 
 /**
@@ -86,7 +90,7 @@ function toJSON() {
     }
 
     ast = {
-        'type' : self.TextOM.types[self.type]
+        'type' : self.type
     };
 
     if (!('length' in self)) {

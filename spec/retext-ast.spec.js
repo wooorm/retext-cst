@@ -65,7 +65,7 @@ describe('Retext.parser.TextOM.Node#toJSON()', function () {
         }
     );
 
-    it('should stringify a data property when not empty', function () {
+    it('should include a data property when not empty', function () {
         var source = 'A simple sentence.',
             root = retext.parse(source),
             ast = retext.parser.tokenizeRoot(source);

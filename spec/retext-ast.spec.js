@@ -191,4 +191,17 @@ describe('Retext.fromAST(ast)', function () {
 
         assert(retext.fromAST(tree).toAST() === JSON.stringify(tree));
     });
+
+    it('should set data properties', function () {
+        var tree = retext.parser.tokenizeRoot('A simple sentence.'),
+            ast;
+
+        tree.data = {
+            'test' : 'test'
+        };
+
+        ast = JSON.stringify(tree);
+
+        assert(retext.fromAST(ast).toAST() === JSON.stringify(tree));
+    });
 });

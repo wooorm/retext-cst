@@ -18,7 +18,7 @@ if (!JSON) {
  */
 function fromJSON(TextOM, ast) {
     var iterator = -1,
-        children, node;
+        children, node, data, attribute;
 
     if (ast instanceof String) {
         ast = ast.toString();
@@ -49,6 +49,17 @@ function fromJSON(TextOM, ast) {
         }
     } else {
         node.fromString(ast.value);
+    }
+
+    if ('data' in ast) {
+        data = ast.data;
+
+        for (attribute in data) {
+            /* istanbul ignore else */
+            if (data.hasOwnProperty(attribute)) {
+                node.data[attribute] = data[attribute];
+            }
+        }
     }
 
     return node;

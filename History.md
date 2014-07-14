@@ -1,4 +1,12 @@
 
+n.n.n / 2014-07-14
+==================
+
+ * fromAST now include data properties, when existing
+ * Fix incorrect wording (ast instead of tree)
+ * Fix incorrect wording
+ * toJSON and toAST now include data properties, when not empty (fixes #1)
+
 0.1.0 / 2014-07-12
 ==================
 

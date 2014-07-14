@@ -70,6 +70,19 @@ function fromAST(ast) {
     return tree;
 }
 
+function hasKeys(object) {
+    var attribute;
+
+    for (attribute in object) {
+        /* istanbul ignore else */
+        if (object.hasOwnProperty(attribute)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /**
  * `toJSON` converts the given node to a JSON object.
  *
@@ -105,6 +118,10 @@ function toJSON() {
         }
 
         ast.children = result;
+    }
+
+    if ('data' in self && hasKeys(self.data)) {
+        ast.data = self.data;
     }
 
     return ast;

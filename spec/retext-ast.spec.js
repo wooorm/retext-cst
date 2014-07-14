@@ -64,6 +64,20 @@ describe('Retext.parser.TextOM.Node#toJSON()', function () {
             }, 'undefined');
         }
     );
+
+    it('should stringify a data property when not empty', function () {
+        var source = 'A simple sentence.',
+            root = retext.parse(source),
+            ast = retext.parser.tokenizeRoot(source);
+
+        ast.data = {
+            'test' : 'test'
+        };
+
+        root.data.test = 'test';
+
+        assert(JSON.stringify(root) === JSON.stringify(ast));
+    });
 });
 
 describe('Retext.parser.TextOM.Node#toAST(delimiter?)', function () {

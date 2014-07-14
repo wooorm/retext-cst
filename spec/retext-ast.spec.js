@@ -176,9 +176,8 @@ describe('Retext.fromAST(ast)', function () {
     );
 
     it('should convert a stringified AST into an object model', function () {
-        var ast = retext.parser.tokenizeRoot('A simple sentence.');
-
-        ast = JSON.stringify(ast);
+        var tree = retext.parser.tokenizeRoot('A simple sentence.'),
+            ast = JSON.stringify(tree);
 
         assert(retext.fromAST(ast).toAST() === ast);
 
@@ -188,8 +187,8 @@ describe('Retext.fromAST(ast)', function () {
     });
 
     it('should convert an AST into an object model', function () {
-        var ast = retext.parser.tokenizeRoot('A simple sentence.');
+        var tree = retext.parser.tokenizeRoot('A simple sentence.');
 
-        assert(retext.fromAST(ast).toAST() === JSON.stringify(ast));
+        assert(retext.fromAST(tree).toAST() === JSON.stringify(tree));
     });
 });

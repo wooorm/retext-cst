@@ -73,12 +73,12 @@ function fromJSON(TextOM, ast) {
  * @global
  * @private
  */
-function fromAST(ast) {
+function fromAST(ast, done) {
     var tree = fromJSON(this.parser.TextOM, ast);
 
-    this.applyPlugins(tree);
+    this.run(tree, done);
 
-    return tree;
+    return this;
 }
 
 function hasKeys(object) {

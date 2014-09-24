@@ -4,14 +4,19 @@
 
 ## Installation
 
-NPM:
+npm:
 ```sh
 $ npm install retext-ast
 ```
 
-Component.js:
+Component:
 ```sh
 $ component install wooorm/retext-ast
+```
+
+Bower:
+```sh
+$ bower install retext-ast
 ```
 
 ## Usage

@@ -1,4 +1,24 @@
 
+n.n.n / 2014-09-24
+==================
+
+ * Update Readme.md
+ * Add passing errors to `done` instead of throwing
+ * Refactor API
+ * Add npm deployment to travis
+ * Remove `npm update` from travis
+ * Update Installation in docs
+ * Add bower.json
+ * Fix property order in component.json, package.json
+ * Update .gitignore, .npmignore
+ * Update copright in Readme.md
+ * Remove testling
+ * Refactor spec for retext@0.2.0
+ * Update retext
+ * Fix API for retext@0.2.0
+ * Add retext as a peer dependency
+ * Update eslint to 0.8.0, mocha to 1.20.4
+
 0.1.1 / 2014-07-14
 ==================
 

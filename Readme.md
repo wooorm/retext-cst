@@ -119,4 +119,4 @@ Returns a stringified JSON—optionally pretty printed—representation of a Nod
 
 ## License
 
-  MIT
+MIT © Titus Wormer

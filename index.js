@@ -1,62 +1,101 @@
 'use strict';
 
-exports = module.exports = function () {};
+/**
+ * Define `retextAST`.
+ */
 
-/* istanbul ignore if: User forgot a polyfill much? */
+function retextAST() {}
+
+/**
+ * Constants.
+ */
+
+var objectToString,
+    has;
+
+objectToString = Object.prototype.toString;
+has = Object.prototype.hasOwnProperty;
+
+/**
+ * Warn when this plug-in will not work: JSON encoding
+ * and decoding is required.
+ */
+
+/* istanbul ignore if */
 if (!JSON) {
-    throw new Error('Missing JSON object for reparser');
+    throw new Error(
+        'Missing JSON object for reparser'
+    );
 }
 
 /**
- * `fromJSON` converts a given (stringified?) JSON AST into a node.
+ * Transform a concrete syntax tree into a tree constructed
+ * from a given object model.
  *
- * @param {Object} TextOM - The TextOM to get nodes from.
- * @param {Object|String} ast - The AST to convert.
- * @return {Object} - The parsed node.
- * @global
- * @private
+ * @param {Object} TextOM - the object model.
+ * @param {Object|string} cst - the concrete syntax tree to
+ *   transform.
+ * @return {Node} the node constructed from the
+ *   CST and the object model.
  */
-function fromJSON(TextOM, ast) {
-    var iterator = -1,
-        children, node, data, attribute;
 
-    if (ast instanceof String) {
-        ast = ast.toString();
+function fromJSON(TextOM, cst) {
+    var index,
+        children,
+        node,
+        data,
+        attribute;
+
+    if (cst instanceof String) {
+        cst = cst.toString();
     }
 
-    if (typeof ast === 'string') {
-        ast = JSON.parse(ast);
-    } else if ({}.toString.call(ast) !== '[object Object]') {
-        throw new TypeError('Illegal invocation: \'' + ast +
-            '\' is not a valid argument for \'fromAST\'');
+    if (typeof cst === 'string') {
+        cst = JSON.parse(cst);
     }
 
-    if (!('type' in ast && ('value' in ast || 'children' in ast))) {
-        throw new TypeError('Illegal invocation: \'' + ast +
-            '\' is not a valid argument for \'fromAST\' (it\'s ' +
-            'missing the `type`, and either `value` or `children` ' +
-            'attributes)');
+    if (objectToString.call(cst) !== '[object Object]') {
+        throw new TypeError(
+            'Illegal invocation: `' + cst + '` ' +
+            'is not a valid argument for `fromAST`'
+        );
     }
 
-    node = new TextOM[ast.type]();
+    if (
+        !(
+            has.call(cst, 'type') &&
+            (
+                has.call(cst, 'value') ||
+                has.call(cst, 'children')
+            )
+        )
+    ) {
+        throw new TypeError(
+            'Illegal invocation: `' + cst + '` ' +
+            'is not a valid argument for `fromAST` (it is ' +
+            'missing `type`, `value`, or `children` attributes)'
+        );
+    }
 
-    if ('children' in ast) {
-        iterator = -1;
-        children = ast.children;
+    node = new TextOM[cst.type]();
 
-        while (children[++iterator]) {
-            node.append(fromJSON(TextOM, children[iterator]));
+    if (has.call(cst, 'children')) {
+        index = -1;
+        children = cst.children;
+
+        while (children[++index]) {
+            node.append(fromJSON(TextOM, children[index]));
         }
     } else {
-        node.fromString(ast.value);
+        node.fromString(cst.value);
     }
 
-    if ('data' in ast) {
-        data = ast.data;
+    data = cst.data;
 
+    if (data) {
         for (attribute in data) {
             /* istanbul ignore else */
-            if (data.hasOwnProperty(attribute)) {
+            if (has.call(data, attribute)) {
                 node.data[attribute] = data[attribute];
             }
         }
@@ -66,27 +105,39 @@ function fromJSON(TextOM, ast) {
 }
 
 /**
- * `fromAST` converts a given (stringified?) AST into a node.
+ * Transform a concrete syntax tree into a tree
  *
- * @param {Object|String} ast - The AST to convert.
- * @return {Object} - The parsed node.
- * @global
- * @private
+ * @param {Object} cst - the concrete syntax tree to
+ *   transform.
+ * @param {function(Error, Node)} done - Callback to
+ *   invoke when the transformations have completed.
+ * @this {Retext}
+ * @return this
  */
-function fromAST(ast, done) {
-    var tree = fromJSON(this.parser.TextOM, ast);
 
-    this.run(tree, done);
+function fromAST(cst, done) {
+    var self;
 
-    return this;
+    self = this;
+
+    self.run(fromJSON(self.TextOM, cst), done);
+
+    return self;
 }
+
+/**
+ * Return whether `object` has keys.
+ *
+ * @param {Object} object
+ * @return {boolean}
+ */
 
 function hasKeys(object) {
     var attribute;
 
     for (attribute in object) {
         /* istanbul ignore else */
-        if (object.hasOwnProperty(attribute)) {
+        if (has.call(object, attribute)) {
             return true;
         }
     }
@@ -95,30 +146,33 @@ function hasKeys(object) {
 }
 
 /**
- * `toJSON` converts the given node to a JSON object.
+ * Transform a `node` into a concrete syntax tree.
  *
- * @return {Object} - A simple object containing the nodes type, and
- *                    either a children attribute containing an array
- *                    the result of `toJSON` on each child, or a value
- *                    attribute containing the nodes internal value.
- * @global
- * @private
+ * @this {Node}
+ * @return {Object} Concrete syntax tree.
  */
+
 function toJSON() {
-    var self = this,
-        ast, result, item;
+    var self,
+        cst,
+        result,
+        item;
+
+    self = this;
 
     if (!self || !self.TextOM) {
-        throw new TypeError('Illegal invocation: \'' + self +
-            '\' is not a valid argument for \'toJSON\'');
+        throw new TypeError(
+            'Illegal invocation: `' + self + '` ' +
+            'is not a valid argument for `toJSON`'
+        );
     }
 
-    ast = {
-        'type' : self.type
-    };
+    cst = {};
 
-    if (!('length' in self)) {
-        ast.value = self.toString();
+    cst.type = self.type;
+
+    if (!has.call(self, 'length')) {
+        cst.value = self.toString();
     } else {
         result = [];
         item = self.head;
@@ -128,87 +182,67 @@ function toJSON() {
             item = item.next;
         }
 
-        ast.children = result;
+        cst.children = result;
     }
 
-    if ('data' in self && hasKeys(self.data)) {
-        ast.data = self.data;
+    if (has.call(self, 'data') && hasKeys(self.data)) {
+        cst.data = self.data;
     }
 
-    return ast;
+    return cst;
 }
 
 /**
- * `toAST` converts the operated on node into an stringified JSON object.
+ * Transform a `node` into a stringified concrete syntax tree.
  *
- * @param {?(String|Number)} delimiter - When given, pretty prints the
- *                                       stringified object—indenting
- *                                       each level either with the given
- *                                       string or with the given number
- *                                       of spaces.
- * @return {String} - The `JSON.stringify`d result of the simple object
- *                    representation of the operated on node.
- * @global
- * @private
+ * @this {Node}
+ * @param {(string|number)?} delimiter - When given,
+ *   pretty prints the stringified object—indenting
+ *   each level either with the given string or with
+ *   the given number of spaces.
+ * @return {string} Stringified concrete syntax tree.
  */
+
 function toAST(delimiter) {
     return JSON.stringify(this, null, delimiter);
 }
 
+/**
+ * Define `attach`.
+ *
+ * @param {Retext} retext - Instance of Retext.
+ */
+
 function attach(retext) {
-    var parser = retext.parser,
-        nodePrototype = parser.TextOM.Node.prototype;
+    var nodePrototype;
 
-    /**
-     * `toAST` converts the operated on node into an stringified JSON object.
-     *
-     * @param {?(String|Number)} delimiter - When given, pretty prints the
-     *                                       stringified object—indenting
-     *                                       each level either with the given
-     *                                       string or with the given number
-     *                                       of spaces.
-     * @return {String} - The `JSON.stringify`d result of the simple object
-     *                    representation of the operated on node.
-     * @api public
-     * @memberof Node.prototype
-     */
+    nodePrototype = retext.TextOM.Node.prototype;
+
     nodePrototype.toAST = toAST;
-
-    /**
-     * `toAST` converts the operated on node into an JSON object.
-     *
-     * @return {Object} - A JSON representation without all the cyclical
-     *                    TextOM things.
-     * @api public
-     * @memberof Node.prototype
-     */
     nodePrototype.toJSON = toJSON;
-
-    /**
-     * Expose `fromAST`.
-     *
-     * @param {Object|String} ast - The AST to convert.
-     * @return {Object} - A TextOM object model.
-     * @api public
-     * @memberof retext
-     */
     retext.fromAST = fromAST;
 }
 
 /**
  * Expose `attach`.
- * @memberof exports
  */
-exports.attach = attach;
+
+retextAST.attach = attach;
 
 /**
  * Expose `toJSON`.
- * @memberof exports
  */
-exports.toJSON = toJSON;
+
+retextAST.toJSON = toJSON;
 
 /**
  * Expose `toAST`.
- * @memberof exports
  */
-exports.toAST = toAST;
+
+retextAST.toAST = toAST;
+
+/**
+ * Expose `retextAST`.
+ */
+
+module.exports = retextAST;

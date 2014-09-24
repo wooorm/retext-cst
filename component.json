@@ -1,15 +1,15 @@
 {
   "name": "retext-ast",
-  "repository": "wooorm/retext-ast",
-  "description": "Retext encoding and decoding between AST and object model",
   "version": "0.1.1",
+  "description": "Retext encoding and decoding between AST and object model",
+  "license": "MIT",
   "keywords": [
     "retext",
     "ast",
     "json"
   ],
+  "repository": "wooorm/retext-ast",
   "scripts" : [
     "index.js"
-  ],
-  "license": "MIT"
+  ]
 }

@@ -116,11 +116,20 @@ function fromJSON(TextOM, cst) {
  */
 
 function fromAST(cst, done) {
-    var self;
+    var self,
+        tree;
 
     self = this;
 
-    self.run(fromJSON(self.TextOM, cst), done);
+    try {
+        tree = fromJSON(self.TextOM, cst);
+    } catch (err) {
+        done(err);
+
+        return self;
+    }
+
+    self.run(tree, done);
 
     return self;
 }

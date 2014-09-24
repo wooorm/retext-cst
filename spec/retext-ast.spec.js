@@ -149,68 +149,49 @@ describe('TextOM.Node#toAST(delimiter?)', function () {
     );
 });
 
-describe('Retext.fromAST(ast)', function () {
+describe('Retext.fromAST(ast, done)', function () {
     it('should be a `function`', function () {
         assert(typeof retext.fromAST === 'function');
     });
 
     it('should throw, when something other than a string or object is given',
-        function () {
-            assert.throws(function () {
-                retext.fromAST(Math);
-            }, /Math/);
+        function (done) {
+            retext.fromAST(Math, function (err) {
+                assert.throws(function () {
+                    throw err;
+                }, /object Math/);
+            });
 
-            assert.throws(function () {
-                retext.fromAST(1);
-            }, /1/);
-
-            assert.throws(function () {
-                retext.fromAST();
-            }, /undefined/);
-
-            assert.throws(function () {
-                retext.fromAST(null);
-            }, /null/);
-
-            assert.throws(function () {
-                retext.fromAST(undefined);
-            }, /undefined/);
+            done();
         }
     );
 
     it('should throw, when the `JSON.Parse`d value does not contain a ' +
-        '`type` attribute', function () {
-            assert.throws(function () {
-                retext.fromAST({});
-            }, /type/);
+        '`type` attribute', function (done) {
+            retext.fromAST({
+                'value' : 'test'
+            }, function (err) {
+                assert.throws(function () {
+                    throw err;
+                }, /`type`/);
 
-            assert.throws(function () {
-                retext.fromAST({
-                    'a' : 'b'
-                });
-            }, /type/);
-
-            assert.throws(function () {
-                retext.fromAST({
-                    'value' : 'test'
-                });
-            }, /type/);
-
-            assert.throws(function () {
-                retext.fromAST({
-                    'children' : []
-                });
-            }, /type/);
+                done();
+            });
         }
     );
 
     it('should throw, when the `JSON.Parse`d value contains ' +
-        'neither a `children`, nor a `value` attribute', function () {
-            assert.throws(function () {
-                retext.fromAST({
-                    'type' : 'RootNode'
-                });
-            }, /children|value/);
+        'neither a `children`, nor a `value` attribute',
+        function (done) {
+            retext.fromAST({
+                'type' : 'RootNode'
+            }, function (err) {
+                assert.throws(function () {
+                    throw err;
+                }, /`(value|children)`/);
+
+                done();
+            });
         }
     );
 

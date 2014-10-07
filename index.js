@@ -24,7 +24,7 @@ has = Object.prototype.hasOwnProperty;
 /* istanbul ignore if */
 if (!JSON) {
     throw new Error(
-        'Missing JSON object for reparser'
+        'Missing `JSON` for `retext-ast`'
     );
 }
 
@@ -55,7 +55,7 @@ function fromJSON(TextOM, cst) {
     }
 
     if (objectToString.call(cst) !== '[object Object]') {
-        throw new TypeError(
+        throw new Error(
             'Illegal invocation: `' + cst + '` ' +
             'is not a valid argument for `fromAST`'
         );
@@ -70,7 +70,7 @@ function fromJSON(TextOM, cst) {
             )
         )
     ) {
-        throw new TypeError(
+        throw new Error(
             'Illegal invocation: `' + cst + '` ' +
             'is not a valid argument for `fromAST` (it is ' +
             'missing `type`, `value`, or `children` attributes)'
@@ -170,7 +170,7 @@ function toJSON() {
     self = this;
 
     if (!self || !self.TextOM) {
-        throw new TypeError(
+        throw new Error(
             'Illegal invocation: `' + self + '` ' +
             'is not a valid argument for `toJSON`'
         );

@@ -11,7 +11,7 @@ var retextAST,
  * Module dependencies.
  */
 
-retextAST = require('..');
+retextAST = require('./');
 Retext = require('retext');
 assert = require('assert');
 

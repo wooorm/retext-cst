@@ -8,8 +8,11 @@
     "ast",
     "json"
   ],
+  "dependencies": {
+    "wooorm/nlcst-to-textom": "^0.0.1"
+  },
   "repository": "wooorm/retext-ast",
-  "scripts" : [
+  "scripts": [
     "index.js"
   ]
 }

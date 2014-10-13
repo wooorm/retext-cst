@@ -8,6 +8,9 @@
     "ast",
     "json"
   ],
+  "dependencies": {
+    "nlcst-to-textom": "^0.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/wooorm/retext-ast.git"

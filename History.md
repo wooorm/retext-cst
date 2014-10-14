@@ -1,4 +1,14 @@
 
+n.n.n / 2014-10-14
+==================
+
+ * Remove custom methods
+ * Add nlcst-to-textom as a dependency
+ * Update .gitignore, .npmignore, bower ignore
+ * Move spec to test.js
+ * Remove browser test
+ * Fix error messages
+
 0.1.2 / 2014-09-24
 ==================
 

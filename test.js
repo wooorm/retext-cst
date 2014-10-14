@@ -173,7 +173,7 @@ describe('Retext.fromAST(ast, done)', function () {
             }, function (err) {
                 assert.throws(function () {
                     throw err;
-                }, /`type`/);
+                });
 
                 done();
             });
@@ -188,7 +188,7 @@ describe('Retext.fromAST(ast, done)', function () {
             }, function (err) {
                 assert.throws(function () {
                     throw err;
-                }, /`(value|children)`/);
+                });
 
                 done();
             });

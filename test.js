@@ -1,15 +1,12 @@
 'use strict';
 
+/**
+ * Dependencies.
+ */
+
 var retextAST,
     Retext,
-    assert,
-    retext,
-    TextOM,
-    parser;
-
-/**
- * Module dependencies.
- */
+    assert;
 
 retextAST = require('./');
 Retext = require('retext');
@@ -18,6 +15,10 @@ assert = require('assert');
 /**
  * Retext.
  */
+
+var retext,
+    TextOM,
+    parser;
 
 retext = new Retext().use(retextAST);
 TextOM = retext.TextOM;

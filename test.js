@@ -33,10 +33,6 @@ describe('retextAST()', function () {
         assert(typeof retextAST === 'function');
     });
 
-    it('should export an `attach` method', function () {
-        assert(typeof retextAST.attach === 'function');
-    });
-
     it('should export a `toJSON` method', function () {
         assert(typeof retextAST.toJSON === 'function');
     });

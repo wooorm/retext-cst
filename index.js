@@ -9,12 +9,6 @@ var toTextOM;
 toTextOM = require('nlcst-to-textom');
 
 /**
- * Define `retextAST`.
- */
-
-function retextAST() {}
-
-/**
  * Warn when this plug-in will not work: JSON encoding
  * and decoding is required.
  */
@@ -127,12 +121,12 @@ function toAST(delimiter) {
 }
 
 /**
- * Define `attach`.
+ * Define `retextAST`.
  *
  * @param {Retext} retext - Instance of Retext.
  */
 
-function attach(retext) {
+function retextAST(retext) {
     var nodePrototype;
 
     nodePrototype = retext.TextOM.Node.prototype;
@@ -141,12 +135,6 @@ function attach(retext) {
     nodePrototype.toJSON = toJSON;
     retext.fromAST = fromAST;
 }
-
-/**
- * Expose `attach`.
- */
-
-retextAST.attach = attach;
 
 /**
  * Expose `toJSON`.

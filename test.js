@@ -93,7 +93,7 @@ describe('TextOM.Node#toJSON()', function () {
         ast = parser.parse(source);
 
         ast.data = {
-            'test' : 'test'
+            'test': 'test'
         };
 
         retext.parse(source, function (err, tree) {
@@ -166,7 +166,7 @@ describe('Retext.fromAST(ast, done)', function () {
     it('should throw, when the `JSON.Parse`d value does not contain a ' +
         '`type` attribute', function (done) {
             retext.fromAST({
-                'value' : 'test'
+                'value': 'test'
             }, function (err) {
                 assert.throws(function () {
                     throw err;
@@ -181,7 +181,7 @@ describe('Retext.fromAST(ast, done)', function () {
         'neither a `children`, nor a `value` attribute',
         function (done) {
             retext.fromAST({
-                'type' : 'RootNode'
+                'type': 'RootNode'
             }, function (err) {
                 assert.throws(function () {
                     throw err;
@@ -240,7 +240,7 @@ describe('Retext.fromAST(ast, done)', function () {
         ast = parser.parse('A simple sentence.');
 
         ast.data = {
-            'test' : 'test'
+            'test': 'test'
         };
 
         ast = JSON.stringify(ast);

@@ -8,6 +8,6 @@ deploy:
   provider: npm
   email: tituswormer@gmail.com
   api_key:
-    secure: czdjC8uYo/FlL3ruqkZnhWIOHo1rSqrMM7XC3d7n0RICIKl6CFgG1rE7DR1cnhEEA7loT3yZU3PrRkOoXD4PmghUVeHu3/sJRX/T/5f3N0akdVuGV5kW3A7bBtpysPCqvVE3wnxaI1nQfhMqpLjzhiDl0NzMh/T4e6iaHHJrLZE=
+    secure: V9a8YU7rzcsZZIEKDIGanmq8FiqZAWbIc4plSgFDqn0smPl5Kq3z2sQF91RUHVxa650CdHgjLFx7t/0QhRHPIfAccvO1+QER/PBhk95xSrIwbujT62pZchT8aW1qwBA5Y2vF8R/FS1NcyRwaWPvqvTztZ6Zi2bOlmCfTc2Z8P4E=
   on:
-    repo: wooorm/retext-ast
+    repo: wooorm/retext-cst

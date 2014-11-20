@@ -138,18 +138,6 @@ function retextCST(retext) {
 }
 
 /**
- * Expose `toJSON`.
- */
-
-retextCST.toJSON = toJSON;
-
-/**
- * Expose `toCST`.
- */
-
-retextCST.toCST = toCST;
-
-/**
  * Expose `retextCST`.
  */
 

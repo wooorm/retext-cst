@@ -32,14 +32,6 @@ describe('retextCST()', function () {
     it('should be a `function`', function () {
         assert(typeof retextCST === 'function');
     });
-
-    it('should export a `toJSON` method', function () {
-        assert(typeof retextCST.toJSON === 'function');
-    });
-
-    it('should export a `toCST` method', function () {
-        assert(typeof retextCST.toCST === 'function');
-    });
 });
 
 describe('retextCST.attach()', function () {

@@ -1,6 +1,6 @@
 # retext-cst [![Build Status](https://travis-ci.org/wooorm/retext-cst.svg?branch=master)](https://travis-ci.org/wooorm/retext-cst) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-cst.svg)](https://coveralls.io/r/wooorm/retext-cst?branch=master)
 
-**[retext](https://github.com/wooorm/retext "Retext")** encoding and decoding between CST and object model.
+**[retext](https://github.com/wooorm/retext "Retext")** encoding and decoding between [NL**CST**](https://github.com/wooorm/nlcst) and object model.
 
 ## Installation
 
@@ -22,24 +22,26 @@ $ bower install retext-cst
 ## Usage
 
 ```js
-var Retext,
-    retextCST,
-    fs,
-    retext;
+var Retext = require('retext');
+var cst = require('retext-cst');
+var inspect = require('retext-inspect');
+var fs = require('fs');
 
-Retext = require('retext');
-retextCST = require('retext-cst');
-fs = require('fs');
+/* Read a JSON stringified NLCST document. */
+var nlcst = fs.readFileSync('cst.json', 'utf8');
 
-retext = new Retext().use(retextCST);
+var retext = new Retext()
+    .use(inspect)
+    .use(cst);
 
-retext.fromCST(fs.readFileSync('cst.json', 'utf8'), function (err, tree) {
-    /* Handle errors. */
-    if (err) {
-        throw err;
-    }
+retext.fromCST(nlcst, function (err, tree) {
+    if (err) throw err;
 
-    /* Pretty-print each level with two spaces. */
+    /*
+     * Pretty-print the object model as a cst (each
+     * level with two spaces).
+     */
+
     console.log(tree.toCST(2));
 });
 ```
@@ -48,33 +50,62 @@ retext.fromCST(fs.readFileSync('cst.json', 'utf8'), function (err, tree) {
 
 ### retext.fromCST(cst, done(err, tree))
 
-```js
-retext.fromCST({"type":"RootNode", "children":[
-  {"type":"ParagraphNode", "children": [
-    {"type":"SentenceNode", "children": [
-      {"type":"WordNode", "children": [
-        { "type": "TextNode", "value": "A" }
-      ]},
-      ...
-      {"type":"PunctuationNode", "children": [
-        { "type": "TextNode", "value": "." }
-      ]}
-    ]}
-  ]}
-]}, console.log);
-/**
- * null, ˅ RootNode
- *    ˃ 0: ParagraphNode[1]
- *      length: 1
- *    ˃ head: ParagraphNode[1]
- *    ˃ data: {}
- *    ˃ __proto__: RootNode
- */
-```
-
-Parse a JSON object or string—a (parsed?) result of `Node#toCST()` or `Node#toJSON()`—into an object model.
+Parse an NLCST node (stringified or JSON) into an object model.
 
 - `cst` (`Object` or `string`): The object to parse into a TextOM tree.
+
+Let’s say we have the following (abbreviated) NCLST in a file called `cst.json`.
+
+```json
+{
+  "type": "RootNode",
+  "children": [
+    {
+      "type": "ParagraphNode",
+      "children": [
+        {
+          "type": "SentenceNode",
+          "children": [
+            {
+              "type": "WordNode",
+              "children": [
+                {
+                  "type": "TextNode",
+                  "value": "A"
+                }
+              ]
+            },
+            ...
+            {
+              "type": "PunctuationNode",
+              "value": "."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Such a file would result in the following **retext** document (note that [retext-inspect](https://github.com/wooorm/retext-inspect) is also used):
+
+```js
+retext.fromCST(theAboveJsonDocument, function (err, tree) {
+    if (err) throw err;
+
+    console.log(tree);
+    /**
+     * RootNode[1]
+     * └─ ParagraphNode[1]
+     *    └─ SentenceNode[2]
+     *       ├─ WordNode[1]
+     *       │  └─ TextNode: 'A'
+     *       ...
+     *       └─ PunctuationNode: '.'
+     */
+});
+```
 
 ### Extensions to TextOM
 
@@ -93,7 +124,8 @@ retext.parse('A simple sentence.', function (err, tree) {
 ```
 
 Returns a JSON (**not** stringified) representation of a Node, which can later be passed to [`retext.fromCST()`](#retextfromcstcst).
-The name of this method might seem a bit confusing, as it doesn't return a JSON string: See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior) for an explanation.
+
+This is just a wrapper around `Node#valueOf()`[[1](https://github.com/wooorm/textom#textomparentvalueof), [2](https://github.com/wooorm/textom#textomtextvalueof)], so it’s possible to pass nodes to [`JSON.stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior).
 
 #### TextOM.Node#toCST(delimiter?)
 
@@ -101,15 +133,15 @@ The name of this method might seem a bit confusing, as it doesn't return a JSON 
 retext.parse('A simple sentence.', function (err, tree) {
     tree.toCST();
     /**
-     * '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","children":[{"type":"TextNode","value":"A"}]},{"type":"WhiteSpaceNode","children":[{"type":"TextNode","value":" "}]},{"type":"WordNode","children":[{"type":"TextNode","value":"simple"}]},{"type":"WhiteSpaceNode","children":[{"type":"TextNode","value":" "}]},{"type":"WordNode","children":[{"type":"TextNode","value":"sentence"}]},{"type":"PunctuationNode","children":[{"type":"TextNode","value":"."}]}]}]}]}'
+     * '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","children":[{"type":"TextNode","value":"A"}]},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","children":[{"type":"TextNode","value":"simple"}]},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","children":[{"type":"TextNode","value":"sentence"}]},{"type":"PunctuationNode","value":"."}]}]}]}'
      */
 });
 
 ```
 
-Returns a stringified JSON—optionally pretty printed—representation of a Node, can later be passed to [`retext.fromCST()`](#retextfromcstcst).
+Returns a stringified JSON NLCST representation of a Node.
 
-- `delimiter` (`null`, `number`, or `string`): Pretty prints the CST. Passed to `JSON.stringify` (See [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument) for docs).
+- `delimiter` (`null`, `number`, or `string`): Pretty prints the CST. Passed to [`JSON.stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument).
 
 ## License
 

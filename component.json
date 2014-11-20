@@ -1,17 +1,17 @@
 {
-  "name": "retext-ast",
+  "name": "retext-cst",
   "version": "0.3.0",
-  "description": "Retext encoding and decoding between AST and object model",
+  "description": "Retext encoding and decoding between CST and object model",
   "license": "MIT",
   "keywords": [
     "retext",
-    "ast",
+    "cst",
     "json"
   ],
   "dependencies": {
     "wooorm/nlcst-to-textom": "^0.1.0"
   },
-  "repository": "wooorm/retext-ast",
+  "repository": "wooorm/retext-cst",
   "scripts": [
     "index.js"
   ]

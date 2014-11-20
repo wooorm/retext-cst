@@ -1,11 +1,11 @@
 {
-  "name": "retext-ast",
+  "name": "retext-cst",
   "main": "index.js",
-  "description": "Retext encoding and decoding between AST and object model",
+  "description": "Retext encoding and decoding between CST and object model",
   "license": "MIT",
   "keywords": [
     "retext",
-    "ast",
+    "cst",
     "json"
   ],
   "dependencies": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wooorm/retext-ast.git"
+    "url": "https://github.com/wooorm/retext-cst.git"
   },
   "authors": [
     "Titus Wormer <tituswormer@gmail.com>"

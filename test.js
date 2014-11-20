@@ -138,9 +138,18 @@ describe('TextOM.Node#toCST(delimiter?)', function () {
     );
 });
 
-describe('Retext.fromCST(cst, done)', function () {
+describe('Retext.fromCST(cst, options?, done)', function () {
     it('should be a `function`', function () {
         assert(typeof retext.fromCST === 'function');
+    });
+
+    it('should throw when `done` is omitted', function () {
+        assert.throws(function () {
+            retext.fromCST({
+                'type': 'TextNode',
+                'value': 'A'
+            });
+        }, /not a valid argument for/);
     });
 
     it('should throw, when something other than a string or object is given',
@@ -154,6 +163,13 @@ describe('Retext.fromCST(cst, done)', function () {
             done();
         }
     );
+
+    it('should NOT throw when `options` are given', function (done) {
+        retext.fromCST({
+            'type': 'TextNode',
+            'value': 'A'
+        }, {}, done);
+    });
 
     it('should throw, when the `JSON.Parse`d value does not contain a ' +
         '`type` attribute', function (done) {

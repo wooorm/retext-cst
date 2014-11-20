@@ -64,11 +64,26 @@ function fromJSON(TextOM, nlcst) {
  * @return this
  */
 
-function fromCST(nlcst, done) {
+function fromCST(nlcst, options, done) {
     var self,
         tree;
 
     self = this;
+
+    if (!done) {
+        done = options;
+        options = null;
+    }
+
+    if (typeof done !== 'function') {
+        throw new TypeError(
+            'Illegal invocation: `' + done + '` ' +
+            'is not a valid argument for ' +
+            '`Retext#fromCST(value, done)`.\n' +
+            'This breaking change occurred in 0.2.0, ' +
+            'see GitHub for more information.'
+        );
+    }
 
     try {
         tree = fromJSON(self.TextOM, nlcst);

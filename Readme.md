@@ -48,11 +48,13 @@ retext.fromCST(nlcst, function (err, tree) {
 
 ## API
 
-### retext.fromCST(cst, done(err, tree))
+### retext.fromCST(cst, options?, done(err, tree))
 
 Parse an NLCST node (stringified or JSON) into an object model.
 
-- `cst` (`Object` or `string`): The object to parse into a TextOM tree.
+- `cst` (`Object` or `string`): The object to parse into a TextOM tree;
+- `options` (`Object`): Passed to plugins;
+- `done` (`function(Error, TextOMNode)`): callback.
 
 Let’s say we have the following (abbreviated) NCLST in a file called `cst.json`.
 

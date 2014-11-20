@@ -21,13 +21,12 @@ if (!JSON) {
 }
 
 /**
- * Transform a concrete syntax tree into a tree constructed
- * from a given object model.
+ * Transform an NLCST node into a TextOM node.
  *
- * @param {Object} TextOM - the object model.
- * @param {Object|string} nlcst - the concrete syntax
- *   tree to transform.
- * @return {Node}
+ * @param {Object} TextOM - Object model.
+ * @param {NLCSTNode|string} nlcst - CST node to
+ *   transform.
+ * @return {TextOMNode}
  */
 
 function fromJSON(TextOM, nlcst) {
@@ -54,9 +53,10 @@ function fromJSON(TextOM, nlcst) {
 }
 
 /**
- * Transform a concrete syntax tree into a tree
+ * Transform an NLCST node into a TextOM node, and
+ * run plugins on it.
  *
- * @param {Object} nlcst - the concrete syntax tree to
+ * @param {NLCSTNode|string} nlcst - the concrete syntax tree to
  *   transform.
  * @param {function(Error, Node)} done - Callback to
  *   invoke when the transformations have completed.
@@ -84,10 +84,10 @@ function fromCST(nlcst, done) {
 }
 
 /**
- * Transform a `node` into a concrete syntax tree.
+ * Transform a TextOM node into an NLCST node.
  *
- * @this {Node}
- * @return {Object} Concrete syntax tree.
+ * @this {TextOMNode}
+ * @return {NLCSTNode}
  */
 
 function toJSON() {
@@ -106,14 +106,14 @@ function toJSON() {
 }
 
 /**
- * Transform a `node` into a stringified concrete syntax tree.
+ * Transform a TextOM node into a stringified NLCST node.
  *
- * @this {Node}
+ * @this {TextOMNode}
  * @param {(string|number)?} delimiter - When given,
  *   pretty prints the stringified object—indenting
  *   each level either with the given string or with
  *   the given number of spaces.
- * @return {string} Stringified concrete syntax tree.
+ * @return {string}
  */
 
 function toCST(delimiter) {
@@ -133,6 +133,7 @@ function retextCST(retext) {
 
     nodePrototype.toCST = toCST;
     nodePrototype.toJSON = toJSON;
+
     retext.fromCST = fromCST;
 }
 

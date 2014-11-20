@@ -4,11 +4,11 @@
  * Dependencies.
  */
 
-var retextAST,
+var retextCST,
     Retext,
     assert;
 
-retextAST = require('./');
+retextCST = require('./');
 Retext = require('retext');
 assert = require('assert');
 
@@ -20,7 +20,7 @@ var retext,
     TextOM,
     parser;
 
-retext = new Retext().use(retextAST);
+retext = new Retext().use(retextCST);
 TextOM = retext.TextOM;
 parser = retext.parser;
 
@@ -28,31 +28,31 @@ parser = retext.parser;
  * Tests.
  */
 
-describe('retextAST()', function () {
+describe('retextCST()', function () {
     it('should be a `function`', function () {
-        assert(typeof retextAST === 'function');
+        assert(typeof retextCST === 'function');
     });
 
     it('should export a `toJSON` method', function () {
-        assert(typeof retextAST.toJSON === 'function');
+        assert(typeof retextCST.toJSON === 'function');
     });
 
-    it('should export a `toAST` method', function () {
-        assert(typeof retextAST.toAST === 'function');
+    it('should export a `toCST` method', function () {
+        assert(typeof retextCST.toCST === 'function');
     });
 });
 
-describe('retextAST.attach()', function () {
-    it('should attach a `toAST` method to `TextOM.Node#`', function () {
-        assert(typeof TextOM.Node.prototype.toAST === 'function');
+describe('retextCST.attach()', function () {
+    it('should attach a `toCST` method to `TextOM.Node#`', function () {
+        assert(typeof TextOM.Node.prototype.toCST === 'function');
     });
 
     it('should attach a `toJSON` method to `TextOM.Node#`', function () {
         assert(typeof TextOM.Node.prototype.toJSON === 'function');
     });
 
-    it('should attach a `fromAST` method to `retext`', function () {
-        assert(typeof retext.fromAST === 'function');
+    it('should attach a `fromCST` method to `retext`', function () {
+        assert(typeof retext.fromCST === 'function');
     });
 });
 
@@ -61,15 +61,15 @@ describe('TextOM.Node#toJSON()', function () {
         assert(typeof (new TextOM.RootNode()).toJSON === 'function');
     });
 
-    it('should convert a `Node` into an AST', function (done) {
+    it('should convert a `Node` into an CST', function (done) {
         var source,
-            ast;
+            cst;
 
         source = 'A simple sentence.';
-        ast = parser.parse(source);
+        cst = parser.parse(source);
 
         retext.parse(source, function (err, tree) {
-            assert(JSON.stringify(tree) === JSON.stringify(ast));
+            assert(JSON.stringify(tree) === JSON.stringify(cst));
 
             done(err);
         });
@@ -87,57 +87,57 @@ describe('TextOM.Node#toJSON()', function () {
 
     it('should include a data property when non-empty', function (done) {
         var source,
-            ast;
+            cst;
 
         source = 'A simple sentence.';
-        ast = parser.parse(source);
+        cst = parser.parse(source);
 
-        ast.data = {
+        cst.data = {
             'test': 'test'
         };
 
         retext.parse(source, function (err, tree) {
             tree.data.test = 'test';
 
-            assert(JSON.stringify(tree) === JSON.stringify(ast));
+            assert(JSON.stringify(tree) === JSON.stringify(cst));
 
             done(err);
         });
     });
 });
 
-describe('TextOM.Node#toAST(delimiter?)', function () {
+describe('TextOM.Node#toCST(delimiter?)', function () {
     it('should be a `function`', function () {
-        assert(typeof new TextOM.RootNode().toAST === 'function');
+        assert(typeof new TextOM.RootNode().toCST === 'function');
     });
 
-    it('should convert a `Node` into an stringified AST', function (done) {
+    it('should convert a `Node` into an stringified CST', function (done) {
         var source,
-            ast;
+            cst;
 
         source = 'A simple sentence.';
-        ast = parser.parse(source);
+        cst = parser.parse(source);
 
         retext.parse(source, function (err, tree) {
-            assert(tree.toAST() === JSON.stringify(ast));
+            assert(tree.toCST() === JSON.stringify(cst));
 
             done(err);
         });
     });
 
-    it('should convert a `Node` into an stringified AST using the given ' +
+    it('should convert a `Node` into an stringified CST using the given ' +
         'delimiter', function (done) {
             var source,
                 delimiter = '\t',
-                ast;
+                cst;
 
             source = 'A simple sentence.';
-            ast = parser.parse(source);
+            cst = parser.parse(source);
 
             retext.parse(source, function (err, tree) {
                 assert(
-                    tree.toAST(delimiter) ===
-                    JSON.stringify(ast, null, delimiter)
+                    tree.toCST(delimiter) ===
+                    JSON.stringify(cst, null, delimiter)
                 );
 
                 done(err);
@@ -146,14 +146,14 @@ describe('TextOM.Node#toAST(delimiter?)', function () {
     );
 });
 
-describe('Retext.fromAST(ast, done)', function () {
+describe('Retext.fromCST(cst, done)', function () {
     it('should be a `function`', function () {
-        assert(typeof retext.fromAST === 'function');
+        assert(typeof retext.fromCST === 'function');
     });
 
     it('should throw, when something other than a string or object is given',
         function (done) {
-            retext.fromAST(Math, function (err) {
+            retext.fromCST(Math, function (err) {
                 assert.throws(function () {
                     throw err;
                 }, /object Math/);
@@ -165,7 +165,7 @@ describe('Retext.fromAST(ast, done)', function () {
 
     it('should throw, when the `JSON.Parse`d value does not contain a ' +
         '`type` attribute', function (done) {
-            retext.fromAST({
+            retext.fromCST({
                 'value': 'test'
             }, function (err) {
                 assert.throws(function () {
@@ -180,7 +180,7 @@ describe('Retext.fromAST(ast, done)', function () {
     it('should throw, when the `JSON.Parse`d value contains ' +
         'neither a `children`, nor a `value` attribute',
         function (done) {
-            retext.fromAST({
+            retext.fromCST({
                 'type': 'RootNode'
             }, function (err) {
                 assert.throws(function () {
@@ -192,14 +192,14 @@ describe('Retext.fromAST(ast, done)', function () {
         }
     );
 
-    it('should convert a stringified AST into an object model',
+    it('should convert a stringified CST into an object model',
         function (done) {
-            var ast;
+            var cst;
 
-            ast = JSON.stringify(parser.parse('A simple sentence.'));
+            cst = JSON.stringify(parser.parse('A simple sentence.'));
 
-            retext.fromAST(ast, function (err, tree) {
-                assert(tree.toAST() === ast);
+            retext.fromCST(cst, function (err, tree) {
+                assert(tree.toCST() === cst);
 
                 done(err);
             });
@@ -208,13 +208,13 @@ describe('Retext.fromAST(ast, done)', function () {
 
     it('should accept `String` objects',
         function (done) {
-            var ast;
+            var cst;
 
-            ast = JSON.stringify(parser.parse('A simple sentence.'));
+            cst = JSON.stringify(parser.parse('A simple sentence.'));
 
             /* eslint-disable no-new-wrappers */
-            retext.fromAST(new String(ast), function (err, tree) {
-                assert(tree.toAST() === ast);
+            retext.fromCST(new String(cst), function (err, tree) {
+                assert(tree.toCST() === cst);
 
                 done(err);
                 /* eslint-enable no-new-wrappers */
@@ -222,31 +222,31 @@ describe('Retext.fromAST(ast, done)', function () {
         }
     );
 
-    it('should convert an AST into an object model', function (done) {
-        var ast;
+    it('should convert an CST into an object model', function (done) {
+        var cst;
 
-        ast = parser.parse('A simple sentence.');
+        cst = parser.parse('A simple sentence.');
 
-        retext.fromAST(ast, function (err, tree) {
-            assert(tree.toAST() === JSON.stringify(ast));
+        retext.fromCST(cst, function (err, tree) {
+            assert(tree.toCST() === JSON.stringify(cst));
 
             done(err);
         });
     });
 
     it('should set data properties', function (done) {
-        var ast;
+        var cst;
 
-        ast = parser.parse('A simple sentence.');
+        cst = parser.parse('A simple sentence.');
 
-        ast.data = {
+        cst.data = {
             'test': 'test'
         };
 
-        ast = JSON.stringify(ast);
+        cst = JSON.stringify(cst);
 
-        retext.fromAST(ast, function (err, tree) {
-            assert(tree.toAST() === ast);
+        retext.fromCST(cst, function (err, tree) {
+            assert(tree.toCST() === cst);
 
             done(err);
         });

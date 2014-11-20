@@ -16,7 +16,7 @@ toTextOM = require('nlcst-to-textom');
 /* istanbul ignore if */
 if (!JSON) {
     throw new Error(
-        'Missing `JSON` for `retext-ast`'
+        'Missing `JSON` for `retext-cst`'
     );
 }
 
@@ -64,7 +64,7 @@ function fromJSON(TextOM, nlcst) {
  * @return this
  */
 
-function fromAST(nlcst, done) {
+function fromCST(nlcst, done) {
     var self,
         tree;
 
@@ -116,40 +116,40 @@ function toJSON() {
  * @return {string} Stringified concrete syntax tree.
  */
 
-function toAST(delimiter) {
+function toCST(delimiter) {
     return JSON.stringify(this, null, delimiter);
 }
 
 /**
- * Define `retextAST`.
+ * Define `retextCST`.
  *
  * @param {Retext} retext - Instance of Retext.
  */
 
-function retextAST(retext) {
+function retextCST(retext) {
     var nodePrototype;
 
     nodePrototype = retext.TextOM.Node.prototype;
 
-    nodePrototype.toAST = toAST;
+    nodePrototype.toCST = toCST;
     nodePrototype.toJSON = toJSON;
-    retext.fromAST = fromAST;
+    retext.fromCST = fromCST;
 }
 
 /**
  * Expose `toJSON`.
  */
 
-retextAST.toJSON = toJSON;
+retextCST.toJSON = toJSON;
 
 /**
- * Expose `toAST`.
+ * Expose `toCST`.
  */
 
-retextAST.toAST = toAST;
+retextCST.toCST = toCST;
 
 /**
- * Expose `retextAST`.
+ * Expose `retextCST`.
  */
 
-module.exports = retextAST;
+module.exports = retextCST;

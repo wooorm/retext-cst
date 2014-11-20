@@ -1,4 +1,9 @@
 
+n.n.n / 2014-11-20
+==================
+
+ * Fix incorrect names in package manifests
+
 0.3.0 / 2014-11-20
 ==================
 

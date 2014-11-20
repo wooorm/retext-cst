@@ -1,4 +1,18 @@
 
+n.n.n / 2014-11-20
+==================
+
+ * Rename project in `.travis.yml`
+ * Add support for an optional `options` object to `fromCST`
+ * Remove exposed `toJSON` and `toCST` methods
+ * Refactor `index.js`
+ * Add flat badges to `Readme.md`
+ * Refactor `Readme.md`
+ * Rename project
+ * Fix incorrect executive rights on `test.js`
+ * Refactor npm script targets in `package.json`
+ * Update retext, nlcst-to-textom
+
 0.2.2 / 2014-10-27
 ==================
 

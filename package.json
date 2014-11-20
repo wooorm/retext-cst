@@ -1,6 +1,6 @@
 {
   "name": "retext-cst",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Retext encoding and decoding between cst and object model",
   "license": "MIT",
   "keywords": [

@@ -1,5 +1,5 @@
 
-n.n.n / 2014-11-20
+0.3.1 / 2014-11-20
 ==================
 
  * Fix incorrect names in package manifests

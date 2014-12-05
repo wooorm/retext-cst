@@ -138,7 +138,6 @@ retext.parse('A simple sentence.', function (err, tree) {
      * '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","children":[{"type":"TextNode","value":"A"}]},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","children":[{"type":"TextNode","value":"simple"}]},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","children":[{"type":"TextNode","value":"sentence"}]},{"type":"PunctuationNode","value":"."}]}]}]}'
      */
 });
-
 ```
 
 Returns a stringified JSON NLCST representation of a Node.
@@ -147,4 +146,4 @@ Returns a stringified JSON NLCST representation of a Node.
 
 ## License
 
-MIT © Titus Wormer
+MIT © [Titus Wormer](http://wooorm.com)

@@ -144,6 +144,25 @@ Returns a stringified JSON NLCST representation of a Node.
 
 - `delimiter` (`null`, `number`, or `string`): Pretty prints the CST. Passed to [`JSON.stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument).
 
+## Performance
+
+```
+              retext.fromCST(cst, options?, callback);
+     258 op/s » A paragraph (5 sentences, 100 words)
+      27 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)
+       3 op/s » An article (100 paragraphs, 500 sentences, 10,000 words)
+
+              TextOM.Node#toJSON()
+  26,037 op/s » A paragraph (5 sentences, 100 words)
+   2,669 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)
+     223 op/s » An article (100 paragraphs, 500 sentences, 10,000 words)
+
+              TextOM.Node#toCST(delimiter?)
+   1,003 op/s » A paragraph (5 sentences, 100 words)
+     101 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)
+       9 op/s » An article (100 paragraphs, 500 sentences, 10,000 words)
+```
+
 ## License
 
 MIT © [Titus Wormer](http://wooorm.com)

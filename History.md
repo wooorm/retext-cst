@@ -1,4 +1,13 @@
 
+n.n.n / 2014-12-05
+==================
+
+ * Add benchmark
+ * Fix non-github-markdown in `Readme.md`
+ * Refactor npm script targets in `package.json`
+ * Add link to personal website to copyright in `Readme.md`
+ * Update nlcst-to-textom, eslint, retext
+
 0.3.1 / 2014-11-20
 ==================
 

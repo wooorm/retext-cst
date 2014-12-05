@@ -1,6 +1,6 @@
 # retext-cst [![Build Status](https://img.shields.io/travis/wooorm/retext-cst.svg?style=flat)](https://travis-ci.org/wooorm/retext-cst) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-cst.svg?style=flat)](https://coveralls.io/r/wooorm/retext-cst?branch=master)
 
-**[retext](https://github.com/wooorm/retext "Retext")** encoding and decoding between [NL**CST**](https://github.com/wooorm/nlcst) and object model.
+**[retext](https://github.com/wooorm/retext "Retext")** encoding and decoding between [NLCST](https://github.com/wooorm/nlcst) and object model.
 
 ## Installation
 

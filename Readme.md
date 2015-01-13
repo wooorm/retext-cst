@@ -51,9 +51,9 @@ retext.fromCST(nlcst, function (err, tree) {
 
 ## API
 
-### retext.fromCST(cst, options?, done(err, tree))
+### [retext](https://github.com/wooorm/retext#retextparser).fromCST(cst, options?, done(err, tree))
 
-Parse an NLCST node (stringified or JSON) into an object model.
+Parse an [NLCST node](https://github.com/wooorm/nlcst#node) (stringified or JSON) into an object model.
 
 - `cst` (`Object` or `string`): The object to parse into a TextOM tree;
 - `options` (`Object`): Passed to plugins;
@@ -112,9 +112,7 @@ retext.fromCST(theAboveJsonDocument, function (err, tree) {
 });
 ```
 
-### Extensions to TextOM
-
-#### TextOM.Node#toJSON()
+### [Node](https://github.com/wooorm/textom#textomnode-nlcstnode)#toJSON()
 
 ```javascript
 retext.parse('A simple sentence.', function (err, tree) {
@@ -132,7 +130,7 @@ Returns a JSON (**not** stringified) representation of a Node, which can later b
 
 This is just a wrapper around `Node#valueOf()`[[1](https://github.com/wooorm/textom#textomparentvalueof), [2](https://github.com/wooorm/textom#textomtextvalueof)], so it’s possible to pass nodes to [`JSON.stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior).
 
-#### TextOM.Node#toCST(delimiter?)
+### [Node](https://github.com/wooorm/textom#textomnode-nlcstnode)#toCST(delimiter?)
 
 ```javascript
 retext.parse('A simple sentence.', function (err, tree) {

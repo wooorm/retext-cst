@@ -100,7 +100,7 @@ retext.fromCST(theAboveJsonDocument, function (err, tree) {
     if (err) throw err;
 
     console.log(tree);
-    /**
+    /*
      * RootNode[1]
      * └─ ParagraphNode[1]
      *    └─ SentenceNode[2]
@@ -119,7 +119,7 @@ retext.fromCST(theAboveJsonDocument, function (err, tree) {
 ```javascript
 retext.parse('A simple sentence.', function (err, tree) {
     tree.toJSON();
-    /**
+    /*
      * ˅ Object
      *    ˃ children: Array[1]
      *      type: "RootNode"
@@ -137,7 +137,7 @@ This is just a wrapper around `Node#valueOf()`[[1](https://github.com/wooorm/tex
 ```javascript
 retext.parse('A simple sentence.', function (err, tree) {
     tree.toCST();
-    /**
+    /*
      * '{"type":"RootNode","children":[{"type":"ParagraphNode","children":[{"type":"SentenceNode","children":[{"type":"WordNode","children":[{"type":"TextNode","value":"A"}]},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","children":[{"type":"TextNode","value":"simple"}]},{"type":"WhiteSpaceNode","value":" "},{"type":"WordNode","children":[{"type":"TextNode","value":"sentence"}]},{"type":"PunctuationNode","value":"."}]}]}]}'
      */
 });

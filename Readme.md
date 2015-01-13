@@ -5,23 +5,26 @@
 ## Installation
 
 npm:
-```sh
+
+```bash
 $ npm install retext-cst
 ```
 
 Component:
-```sh
+
+```bash
 $ component install wooorm/retext-cst
 ```
 
 Bower:
-```sh
+
+```bash
 $ bower install retext-cst
 ```
 
 ## Usage
 
-```js
+```javascript
 var Retext = require('retext');
 var cst = require('retext-cst');
 var inspect = require('retext-inspect');
@@ -92,7 +95,7 @@ Let’s say we have the following (abbreviated) NCLST in a file called `cst.json
 
 Such a file would result in the following **retext** document (note that [retext-inspect](https://github.com/wooorm/retext-inspect) is also used):
 
-```js
+```javascript
 retext.fromCST(theAboveJsonDocument, function (err, tree) {
     if (err) throw err;
 
@@ -113,7 +116,7 @@ retext.fromCST(theAboveJsonDocument, function (err, tree) {
 
 #### TextOM.Node#toJSON()
 
-```js
+```javascript
 retext.parse('A simple sentence.', function (err, tree) {
     tree.toJSON();
     /**
@@ -131,7 +134,7 @@ This is just a wrapper around `Node#valueOf()`[[1](https://github.com/wooorm/tex
 
 #### TextOM.Node#toCST(delimiter?)
 
-```js
+```javascript
 retext.parse('A simple sentence.', function (err, tree) {
     tree.toCST();
     /**
@@ -146,7 +149,7 @@ Returns a stringified JSON NLCST representation of a Node.
 
 ## Performance
 
-```
+```text
               retext.fromCST(cst, options?, callback);
      258 op/s » A paragraph (5 sentences, 100 words)
       27 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)

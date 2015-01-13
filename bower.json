@@ -9,7 +9,7 @@
     "json"
   ],
   "dependencies": {
-    "nlcst-to-textom": "^0.1.0"
+    "nlcst-to-textom": "^0.2.0"
   },
   "repository": {
     "type": "git",

@@ -9,7 +9,7 @@
     "json"
   ],
   "dependencies": {
-    "wooorm/nlcst-to-textom": "^0.1.0"
+    "wooorm/nlcst-to-textom": "^0.2.0"
   },
   "repository": "wooorm/retext-cst",
   "scripts": [

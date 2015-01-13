@@ -22,6 +22,12 @@ $ component install wooorm/retext-cst
 $ bower install retext-cst
 ```
 
+[Duo](http://duojs.org/#getting-started):
+
+```javascript
+var cst = require('wooorm/retext-cst');
+```
+
 ## Usage
 
 ```javascript

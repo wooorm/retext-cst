@@ -3,14 +3,14 @@
 var Retext,
     cst;
 
-/**
+/*
  * Dependencies.
  */
 
 Retext = require('retext');
 cst = require('./');
 
-/**
+/*
  * Dependencies.
  */
 
@@ -18,7 +18,7 @@ var retext;
 
 retext = new Retext().use(cst);
 
-/**
+/*
  * Test data.
  *
  * This includes:
@@ -61,7 +61,7 @@ paragraphNLCST = retext.parser.parse(paragraph);
 sectionNLCST = retext.parser.parse(section);
 articleNLCST = retext.parser.parse(article);
 
-/**
+/*
  * Benchmark `fromCST`.
  */
 
@@ -85,7 +85,7 @@ suite('retext.fromCST(cst, options?, callback);', function () {
     );
 });
 
-/**
+/*
  * Benchmark `toJSON`.
  */
 
@@ -135,7 +135,7 @@ suite('TextOM.Node#toJSON()', function () {
     );
 });
 
-/**
+/*
  * Benchmark `toCST`.
  */
 

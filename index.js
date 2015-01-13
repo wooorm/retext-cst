@@ -1,6 +1,6 @@
 'use strict';
 
-/**
+/*
  * Dependencies.
  */
 
@@ -8,7 +8,7 @@ var toTextOM;
 
 toTextOM = require('nlcst-to-textom');
 
-/**
+/*
  * Warn when this plug-in will not work: JSON encoding
  * and decoding is required.
  */
@@ -28,7 +28,6 @@ if (!JSON) {
  *   transform.
  * @return {TextOMNode}
  */
-
 function fromJSON(TextOM, nlcst) {
     var node;
 
@@ -56,14 +55,14 @@ function fromJSON(TextOM, nlcst) {
  * Transform an NLCST node into a TextOM node, and
  * run plugins on it.
  *
- * @param {NLCSTNode|string} nlcst - the concrete syntax tree to
+ * @this {Retext}
+ * @param {NLCSTNode|string} nlcst - The concrete syntax tree to
  *   transform.
+ * @param {Object?} options
  * @param {function(Error, Node)} done - Callback to
  *   invoke when the transformations have completed.
- * @this {Retext}
- * @return this
+ * @return {Retext} - Self.
  */
-
 function fromCST(nlcst, options, done) {
     var self,
         tree;
@@ -104,7 +103,6 @@ function fromCST(nlcst, options, done) {
  * @this {TextOMNode}
  * @return {NLCSTNode}
  */
-
 function toJSON() {
     var self;
 
@@ -124,13 +122,12 @@ function toJSON() {
  * Transform a TextOM node into a stringified NLCST node.
  *
  * @this {TextOMNode}
- * @param {(string|number)?} delimiter - When given,
+ * @param {string|number?} delimiter - When given,
  *   pretty prints the stringified object—indenting
  *   each level either with the given string or with
  *   the given number of spaces.
  * @return {string}
  */
-
 function toCST(delimiter) {
     return JSON.stringify(this, null, delimiter);
 }
@@ -140,7 +137,6 @@ function toCST(delimiter) {
  *
  * @param {Retext} retext - Instance of Retext.
  */
-
 function retextCST(retext) {
     var nodePrototype;
 
@@ -152,7 +148,7 @@ function retextCST(retext) {
     retext.fromCST = fromCST;
 }
 
-/**
+/*
  * Expose `retextCST`.
  */
 

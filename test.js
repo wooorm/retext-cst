@@ -1,6 +1,6 @@
 'use strict';
 
-/**
+/*
  * Dependencies.
  */
 
@@ -12,7 +12,7 @@ retextCST = require('./');
 Retext = require('retext');
 assert = require('assert');
 
-/**
+/*
  * Retext.
  */
 
@@ -24,7 +24,7 @@ retext = new Retext().use(retextCST);
 TextOM = retext.TextOM;
 parser = retext.parser;
 
-/**
+/*
  * Tests.
  */
 
